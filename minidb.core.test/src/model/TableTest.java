@@ -6,10 +6,13 @@ import static org.junit.matchers.JUnitMatchers.*;
 
 import java.math.BigInteger;
 
+import minidb.core.exceptions.ColumnAlreadyExistsException;
+import minidb.core.model.data.Record;
+import minidb.core.model.data.Table;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import exceptions.ColumnAlreadyExistsException;
 
 public class TableTest {
 	

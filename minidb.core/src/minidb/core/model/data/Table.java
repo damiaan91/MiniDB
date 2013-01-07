@@ -1,11 +1,13 @@
-package model;
+package minidb.core.model.data;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import exceptions.ColumnAlreadyExistsException;
+import minidb.core.config.Defaults;
+import minidb.core.exceptions.ColumnAlreadyExistsException;
+import minidb.core.exceptions.InvalidAmountOfInsertValues;
 
 public class Table {
 	
@@ -46,8 +48,33 @@ public class Table {
 		}
 	}
 	
+	public String selectColumns(String[] columns) {
+		String result = null;
+		if (columns[0].equals("*")) {
+			result = String.format(Defaults.SPACING, columnNames.get(0));
+			for (int i = 1; i < columnNames.size(); i++) {
+				result += String.format(Defaults.SPACING, columnNames.get(i));
+			}
+			result += "\n----------------------------------------------------------";
+			for (Record record : getRecords().values()) {
+				result += "\n" + record.toString(columnNames);
+			}
+		}
+		return result;
+	}
+	
 	public Record getRecord(BigInteger key) {
 		return records.get(key);
+	}
+	
+	public BigInteger addRecord(List<String> values) throws InvalidAmountOfInsertValues {
+		if (values.size() != columnNames.size()) throw new InvalidAmountOfInsertValues(columnNames.size(), values.size(), name);
+		Record r = new Record();
+		for(int i = 0; i < values.size(); i++) {
+			r.addColumn(columnNames.get(i));
+			r.setColVal(columnNames.get(i), values.get(i));
+		}
+		return addRecord(r);
 	}
 
 	public BigInteger addRecord(Record r) {

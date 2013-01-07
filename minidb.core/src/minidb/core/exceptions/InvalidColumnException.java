@@ -1,4 +1,4 @@
-package exceptions;
+package minidb.core.exceptions;
 
 import java.text.MessageFormat;
 

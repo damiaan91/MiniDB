@@ -1,10 +1,15 @@
-package model;
+package minidb.core.model.data;
 
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
-import exceptions.InvalidColumnException;
+import minidb.core.config.Defaults;
+import minidb.core.exceptions.InvalidColumnException;
+
+
 
 public class Record {
 	
@@ -43,6 +48,19 @@ public class Record {
 	
 	public Set<String> getColumns() {
 		return data.keySet();
+	}
+	
+	public String toString(List<String> columnNames) {
+		Iterator<String> it = columnNames.iterator();
+		String result = null;
+		if (it.hasNext()) {
+			result = String.format(Defaults.SPACING, data.get(it.next()));
+			while(it.hasNext()) {
+				result += String.format(Defaults.SPACING, data.get(it.next()));
+			}
+		}
+		return result;
+		
 	}
 
 }
