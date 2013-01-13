@@ -1,3 +1,4 @@
+package main;
 import minidb.client.view.Client;
 
 

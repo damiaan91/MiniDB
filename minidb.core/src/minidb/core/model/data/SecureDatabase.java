@@ -1,12 +1,15 @@
 package minidb.core.model.data;
 
 import minidb.core.exceptions.ColumnAlreadyExistsException;
+import minidb.core.exceptions.InsufficientRightsExcpetion;
 import minidb.core.exceptions.InvalidAmountOfInsertValues;
 import minidb.core.exceptions.InvalidTableNameException;
 import minidb.core.exceptions.InvalidUserException;
 import minidb.core.exceptions.UserAlreadyExistsException;
 import minidb.core.model.action.Alter;
-import minidb.core.model.action.Create;
+import minidb.core.model.action.CreateTable;
+import minidb.core.model.action.CreateUser;
+import minidb.core.model.action.GrantPrivilege;
 import minidb.core.model.action.Insert;
 import minidb.core.model.action.Select;
 import minidb.core.security.AccessManager;
@@ -76,7 +79,7 @@ public class SecureDatabase extends Database {
 		}
 
 		@Override
-		public String create(Create create) {
+		public String create(CreateTable create) {
 			try {
 				if(accessManager.isAdmin(sessionUser)) {
 					return db.executeCreate(create);
@@ -96,6 +99,38 @@ public class SecureDatabase extends Database {
 		@Override
 		public void disconnect() {
 			isActive = false;
+		}
+
+		@Override
+		public String getSessionUser() {
+			return sessionUser;
+		}
+
+		@Override
+		public String createUser(CreateUser createUser) {
+			try {
+				if(accessManager.isAdmin(sessionUser)) {
+					accessManager.addUser(createUser.getUsername(), createUser.getPassword(), createUser.isAdmin());
+				}
+			} catch (InvalidUserException | UserAlreadyExistsException e) {
+				return e.getMessage();
+			}
+			return "You have no rights to create users.";
+		}
+
+		@Override
+		public String grantPrivilege(GrantPrivilege grantPrivilege) {
+			try {
+				if(grantPrivilege.isReadAccess()) {
+					accessManager.grantReadAccess(grantPrivilege.getUser(), grantPrivilege.getTable(), sessionUser);
+				}
+				if(grantPrivilege.isWriteAccess()) {
+					accessManager.grantWriteAccess(grantPrivilege.getUser(), grantPrivilege.getTable(), sessionUser);
+				}
+			} catch (InvalidUserException | InsufficientRightsExcpetion e) {
+				return e.getMessage();
+			}
+			return null;
 		}
 	}
 }

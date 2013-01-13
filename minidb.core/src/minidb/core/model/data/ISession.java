@@ -6,9 +6,12 @@ public interface ISession {
 	String select(Select select);
 	String insert(Insert insert);
 	String alter(Alter alter);
-	String create(Create create);
+	String create(CreateTable create);
 	String execute(IAction action);
 	String getDatabaseName();
+	String getSessionUser();
 	boolean isActive();
 	void disconnect();
+	String createUser(CreateUser createUser);
+	String grantPrivilege(GrantPrivilege grantPrivilege);
 }

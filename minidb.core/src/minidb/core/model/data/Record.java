@@ -54,7 +54,7 @@ public class Record {
 		Iterator<String> it = columnNames.iterator();
 		String result = null;
 		if (it.hasNext()) {
-			result = String.format(Defaults.SPACING, data.get(it.next()));
+			result = data.get(it.next());
 			while(it.hasNext()) {
 				result += String.format(Defaults.SPACING, data.get(it.next()));
 			}

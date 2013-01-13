@@ -7,7 +7,7 @@ import java.util.HashMap;
 import minidb.core.exceptions.ColumnAlreadyExistsException;
 import minidb.core.exceptions.InvalidAmountOfInsertValues;
 import minidb.core.exceptions.InvalidTableNameException;
-import minidb.core.model.action.Create;
+import minidb.core.model.action.CreateTable;
 import minidb.core.model.action.IAction;
 import minidb.core.model.action.Insert;
 import minidb.core.model.action.Select;
@@ -52,7 +52,7 @@ public abstract class Database {
 		return MessageFormat.format("Result ({0, number})", insert.getValues().size());
 	}
 
-	protected String executeCreate(Create createCreate) throws InvalidTableNameException, ColumnAlreadyExistsException {
+	protected String executeCreate(CreateTable createCreate) throws InvalidTableNameException, ColumnAlreadyExistsException {
 		createTable(createCreate.getTable(), createCreate.getColumns().toArray(new String[0]));
 		return MessageFormat.format("Successfully created table {0}", createCreate.getTable());
 	}

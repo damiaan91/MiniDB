@@ -5,12 +5,12 @@ import java.util.List;
 
 import minidb.core.model.data.ISession;
 
-public class Create implements IAction {
+public class CreateTable implements IAction {
 	private final String table;
 	private final List<String> columns;
 	
 	
-	public Create(String table) {
+	public CreateTable(String table) {
 		this.table = table;
 		this.columns = new ArrayList<String>();
 	}

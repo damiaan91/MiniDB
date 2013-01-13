@@ -51,7 +51,7 @@ public class Table {
 	public String selectColumns(String[] columns) {
 		String result = null;
 		if (columns[0].equals("*")) {
-			result = String.format(Defaults.SPACING, columnNames.get(0));
+			result = columnNames.get(0);
 			for (int i = 1; i < columnNames.size(); i++) {
 				result += String.format(Defaults.SPACING, columnNames.get(i));
 			}
