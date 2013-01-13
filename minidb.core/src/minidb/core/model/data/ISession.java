@@ -14,4 +14,5 @@ public interface ISession {
 	void disconnect();
 	String createUser(CreateUser createUser);
 	String grantPrivilege(GrantPrivilege grantPrivilege);
+	Database getDatabase();
 }

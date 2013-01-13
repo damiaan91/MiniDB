@@ -2,6 +2,7 @@ package minidb.core.model.data;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,6 +59,15 @@ public class Table {
 			result += "\n----------------------------------------------------------";
 			for (Record record : getRecords().values()) {
 				result += "\n" + record.toString(columnNames);
+			}
+		} else {
+			result = columns[0];
+			for(int i = 1; i < columns.length; i++) {
+				result += String.format(Defaults.SPACING, columns[i]);
+			}
+			result += "\n----------------------------------------------------------";
+			for (Record record : getRecords().values()) {
+				result += "\n" + record.toString(Arrays.asList(columns));
 			}
 		}
 		return result;

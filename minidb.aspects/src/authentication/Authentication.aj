@@ -1,17 +1,18 @@
 package authentication;
 
+import java.util.Arrays;
 import java.util.HashMap;
-
-import org.aspectj.lang.ProceedingJoinPoint;
+import java.util.List;
 
 import logging.CRUDLogging;
+import minidb.core.exceptions.InvalidTableNameException;
 import minidb.core.exceptions.InvalidUserException;
 import minidb.core.model.action.Select;
 import minidb.core.model.data.ISession;
 import minidb.core.security.AccessManager;
 
 public aspect Authentication {
-	public static final String[] filterList = {CRUDLogging.LOGGING_TABLE+"_"+CRUDLogging.LOGGING_COLUMNS[2]};
+	public static final String[] filterList = {CRUDLogging.LOGGING_COLUMNS[2]+"_"+CRUDLogging.LOGGING_TABLE};
 	
 	private HashMap<String, AccessManager> accessManagers = new HashMap<String, AccessManager>();
 	
@@ -28,23 +29,45 @@ public aspect Authentication {
 		call(* *..ISession.select(Select)) &&
 		args(select) && 
 		!within(Authentication);
-	//TODO: filter
+
 	String around(Select select) : sessionSelect(select) {
 		ISession session = (ISession) thisJoinPoint.getTarget();
 		AccessManager am = accessManagers.get(session.getDatabaseName());
-		try {
-			if(!am.isAdmin(session.getSessionUser())) {
-				return "test";
+		if(session.getDatabase().getTableNames().contains(select.getTable())) {
+			try {
+				if(!am.isAdmin(session.getSessionUser())) {
+					filterSelect(select, session);
+				}
+			} catch (InvalidUserException | InvalidTableNameException e) {
+				return e.getMessage();
 			}
-		} catch (InvalidUserException e) {
-			e.printStackTrace();
 		}
 		return proceed(select);
+	}
+
+	private void filterSelect(Select select, ISession session) throws InvalidTableNameException {
+		String filterString;
+		List<String> filterList = Arrays.asList(Authentication.filterList);
+		if(select.getSelect().size() == 1 && select.getSelect().get(0).equals("*")) {
+			select.getSelect().remove(0);
+			for(String column : session.getDatabase().getColumns(select.getTable())) {
+				filterString = column + "_" + select.getTable();
+				if(!filterList.contains(filterString)) {
+					select.getSelect().add(column);
+				}
+			}
+		} else {
+			for(String column : select.getSelect()) {
+				filterString = column + "_" + select.getTable();
+				if(filterList.contains(filterString)) {
+					select.getSelect().remove(column);
+					continue;
+				}
+			}
+		}
 	}
 	
 	after(String db, AccessManager am) returning : newAM(db, am) {
 		accessManagers.put(db, am);
 	}
-	
-
 }

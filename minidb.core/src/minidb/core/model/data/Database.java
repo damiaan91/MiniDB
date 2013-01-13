@@ -34,6 +34,15 @@ public abstract class Database {
 		return tables.values();
 	}
 	
+	public Collection<String> getTableNames() {
+		return this.tables.keySet();
+	}
+	
+	public Collection<String> getColumns(String tableName) throws InvalidTableNameException {
+		if(!tables.keySet().contains(tableName)) throw new InvalidTableNameException(tableName, name);
+		return tables.get(tableName).getColumnNames();
+	}
+	
 	protected void createTable(String tName, String[] cNames) throws InvalidTableNameException, ColumnAlreadyExistsException {
 		if (tables.containsKey(tName)) throw new InvalidTableNameException(tName, name);
 		if (cNames.length < 1) throw new IllegalArgumentException(MessageFormat.format("No column names found for new table {0} (Database: {1}, arguments)", tName, name));
@@ -79,6 +88,11 @@ public abstract class Database {
 		@Override
 		public String getDatabaseName() {
 			return db.getName();
+		}
+
+		@Override
+		public Database getDatabase() {
+			return db;
 		}
 		
 	}
