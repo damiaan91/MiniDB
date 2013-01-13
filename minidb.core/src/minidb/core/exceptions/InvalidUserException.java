@@ -2,7 +2,7 @@ package minidb.core.exceptions;
 
 import java.text.MessageFormat;
 
-public class InvalidUserException extends Exception {
+public class InvalidUserException extends MiniDBCoreException {
 
 	/**
 	 * 

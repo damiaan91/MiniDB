@@ -2,7 +2,7 @@ package minidb.core.exceptions;
 
 import java.text.MessageFormat;
 
-public class UserAlreadyExistsException extends Exception {
+public class UserAlreadyExistsException extends MiniDBCoreException {
 
 	/**
 	 * 

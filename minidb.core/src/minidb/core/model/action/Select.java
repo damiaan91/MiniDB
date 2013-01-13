@@ -3,7 +3,9 @@ package minidb.core.model.action;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Select {
+import minidb.core.model.data.ISession;
+
+public class Select implements IAction {
 	private final List<String> select = new ArrayList<String>();
 	private final String table;
 	
@@ -31,6 +33,11 @@ public class Select {
 			result += " " + c;
 		}
 		return result + " FROM " + table;
+	}
+
+	@Override
+	public String ExecuteUsing(ISession session) {
+		return session.select(this);
 	}
 
 }

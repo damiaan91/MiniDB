@@ -2,7 +2,7 @@ package minidb.core.exceptions;
 
 import java.text.MessageFormat;
 
-public class InsufficientRightsExcpetion extends Exception {
+public class InsufficientRightsExcpetion extends MiniDBCoreException {
 
 	/**
 	 * 

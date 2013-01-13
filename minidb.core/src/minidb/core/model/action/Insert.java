@@ -3,7 +3,9 @@ package minidb.core.model.action;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Insert {
+import minidb.core.model.data.ISession;
+
+public class Insert implements IAction{
 	private final String table;
 	private final ArrayList<String> values;
 	
@@ -30,5 +32,10 @@ public class Insert {
 			result += " " + v;
 		}
 		return result;
+	}
+
+	@Override
+	public String ExecuteUsing(ISession session) {
+		return session.insert(this);
 	}
 }

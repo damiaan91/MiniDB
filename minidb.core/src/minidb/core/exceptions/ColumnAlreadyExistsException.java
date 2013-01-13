@@ -2,7 +2,7 @@ package minidb.core.exceptions;
 
 import java.text.MessageFormat;
 
-public class ColumnAlreadyExistsException extends Exception {
+public class ColumnAlreadyExistsException extends MiniDBCoreException {
 
 	private static final long serialVersionUID = -507155806002039532L;
 

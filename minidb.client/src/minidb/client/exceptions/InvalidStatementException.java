@@ -2,7 +2,7 @@ package minidb.client.exceptions;
 
 import java.text.MessageFormat;
 
-public class InvalidStatementException extends Exception {
+public class InvalidStatementException extends MiniDBClientException {
 
 	/**
 	 * 

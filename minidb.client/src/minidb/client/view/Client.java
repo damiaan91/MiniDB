@@ -1,21 +1,22 @@
 package minidb.client.view;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-
 import minidb.client.exceptions.InvalidStatementException;
+import minidb.client.exceptions.MiniDBClientException;
 import minidb.core.config.Defaults;
 import minidb.core.config.Version;
 import minidb.core.exceptions.ColumnAlreadyExistsException;
 import minidb.core.exceptions.InvalidAmountOfInsertValues;
 import minidb.core.exceptions.InvalidTableNameException;
 import minidb.core.exceptions.InvalidUserException;
-import minidb.core.exceptions.UserAlreadyExistsException;
+import minidb.core.exceptions.MiniDBCoreException;
 import minidb.core.model.action.Create;
+import minidb.core.model.action.IAction;
 import minidb.core.model.action.Insert;
 import minidb.core.model.action.Select;
+import minidb.core.model.data.ISession;
 import minidb.core.model.data.SecureDatabase;
 
 
@@ -23,21 +24,23 @@ public class Client {
 
 	private Scanner in = new Scanner(System.in);
 	private SecureDatabase db;
-	private boolean isLoggedIn;
-	private String currentUser;
+	private ISession session;
+	private boolean exitProgram;
 	
 	public Client() {
 		this(Defaults.databaseName);
+		this.exitProgram = false;
 	}
 	
 	public Client(String dbName) {
 		System.out.println(MessageFormat.format("Starting MiniDB version {0}", Version.VERSION));
 		createDB(dbName);
 		createExamples();
-		login();
-		handleActions();
+		while (!exitProgram) {
+			login();
+			handleActions();
+		}
 		System.out.println("Shutdown MiniDB....");
-		in.nextLine();
 	}	
 	
 	/**
@@ -51,27 +54,35 @@ public class Client {
 		String username;
 		String password;
 		
-		System.out.print("Login: ");
-		username = in.nextLine();
-		System.out.print("Password: ");
-		password = in.nextLine();
-		
-		try {
-			isLoggedIn = db.isValidLogin(username, password);
-			if(isLoggedIn) {
-				this.currentUser = username;
+		for(int i = 0; i < 3 && session == null; i++) {
+			System.out.print("Login: ");
+			username = in.nextLine();
+			System.out.print("Password: ");
+			password = in.nextLine();
+			try {
+				session = db.login(username, password);
+			} catch (InvalidUserException e) {
+				System.out.println(e.getMessage());
 			}
-		} catch (InvalidUserException e) {
-			System.out.println("Error: " + e.getMessage());
-			isLoggedIn = false;
+			if (session == null) {
+				System.out.println("Invalid password.");
+			}
 		}
+		if(session == null) {
+			System.out.println("Failed to login.");
+			exitProgram = true;
+		}
+		
 	}
 	
 	public void handleActions() {
-		while(isLoggedIn) {
+		if(exitProgram) return;
+		while(session.isActive()) {
 			try {
 				parseAction(in.nextLine());
-			} catch (Exception e) {
+			} catch (MiniDBClientException e) {
+				handleException(e);
+			} catch (MiniDBCoreException e) {
 				handleException(e);
 			}
 		}
@@ -79,21 +90,24 @@ public class Client {
 	
 	private void parseAction(String actionMsg) throws InvalidUserException, InvalidTableNameException, InvalidAmountOfInsertValues, InvalidStatementException, ColumnAlreadyExistsException {
 		if (!actionMsg.isEmpty() && !actionMsg.trim().isEmpty()) {
-			if(actionMsg.equals("logout") || actionMsg.equals("exit")) {
-				isLoggedIn = false;
+			switch (actionMsg.toUpperCase()) {
+				case "EXIT": exitProgram = true;
+				case "LOGOUT": session.disconnect();
+				break;
+			}
+		}
+		if (session.isActive()) {
+			String[] statementParts = actionMsg.split(" ");
+			IAction action = null;
+			switch (statementParts[0].toUpperCase()) {
+				case "SELECT": action = createSelect(statementParts); break;
+				case "INSERT": action = createInsert(statementParts); break;
+				case "CREATE": action = createCreate(statementParts); break;
+			}
+			if (action == null) {
+				System.out.println("Unkown statement");
 			} else {
-				String[] statementParts = actionMsg.split(" ");
-				String result;
-				if (statementParts[0].equalsIgnoreCase("SELECT")) {
-					result = db.executeSelect(createSelect(statementParts), currentUser);
-				} else if (statementParts[0].equalsIgnoreCase("INSERT")) {
-					result = db.executeInsert(createInsert(statementParts), currentUser);
-				} else if (statementParts[0].equalsIgnoreCase("CREATE")) {
-					result = db.executeCreate(createCreate(statementParts), currentUser);
-				} else {
-					result = "Unkown statement";
-				}
-				System.out.println(result);
+				System.out.println(action.ExecuteUsing(session));
 			}
 		}
 	}
@@ -138,16 +152,18 @@ public class Client {
 	
 	private void createExamples() {
 		System.out.println("Creating example tables....");
-		currentUser = Defaults.adminUsernam;
 		try {
+			this.session = db.login(Defaults.adminUsernam, Defaults.adminPassword);
 			parseAction("CREATE test COLUMNS firstName lastName");
 			parseAction("INSERT INTO test VALUES Christoph Bockisch");
 			parseAction("INSERT INTO test VALUES Roeland Kegel");
 			parseAction("INSERT INTO test VALUES Damiaan Kruk");
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (MiniDBCoreException | MiniDBClientException e) {
+			System.out.println(e.getMessage());
+			exitProgram = true;
+		} finally {
+			this.session = null;
 		}
-		currentUser = null;
 	}
 
 	private void handleException(Exception e) {
@@ -155,12 +171,8 @@ public class Client {
 	}
 
 	private void createDB(String dbName) {
-		try {
-			db = new SecureDatabase(dbName);
-			System.out.println(MessageFormat.format("SecureDatabase created with name {0}", dbName));
-		} catch (UserAlreadyExistsException e) {
-			e.printStackTrace();
-		}
+		db = new SecureDatabase(dbName);
+		System.out.println(MessageFormat.format("SecureDatabase created with name {0}", dbName));
 	}
 	
 

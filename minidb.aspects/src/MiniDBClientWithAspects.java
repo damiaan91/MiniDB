@@ -1,7 +1,7 @@
 import minidb.client.view.Client;
 
 
-public class console {
+public class MiniDBClientWithAspects {
 
 	/**
 	 * @param args

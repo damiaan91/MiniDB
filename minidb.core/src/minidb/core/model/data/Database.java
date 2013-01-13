@@ -8,6 +8,7 @@ import minidb.core.exceptions.ColumnAlreadyExistsException;
 import minidb.core.exceptions.InvalidAmountOfInsertValues;
 import minidb.core.exceptions.InvalidTableNameException;
 import minidb.core.model.action.Create;
+import minidb.core.model.action.IAction;
 import minidb.core.model.action.Insert;
 import minidb.core.model.action.Select;
 
@@ -29,7 +30,7 @@ public abstract class Database {
 		this.name = name;
 	}
 
-	private Collection<Table> getTables() {
+	protected Collection<Table> getTables() {
 		return tables.values();
 	}
 	
@@ -60,5 +61,25 @@ public abstract class Database {
 		if (!tables.containsKey(select.getTable())) throw new InvalidTableNameException(select.getTable(), name);
 		Table table = tables.get(select.getTable());	
 		return table.selectColumns(select.getSelect().toArray(new String[select.getSelect().size()]));
+	}
+	
+	protected abstract class DbSession implements ISession {
+		
+		protected Database db;
+		
+		protected DbSession(Database db) {
+			this.db = db;
+		}
+		
+		@Override
+		public String execute(IAction action) {
+			return action.ExecuteUsing(this);
+		}
+
+		@Override
+		public String getDatabaseName() {
+			return db.getName();
+		}
+		
 	}
 }

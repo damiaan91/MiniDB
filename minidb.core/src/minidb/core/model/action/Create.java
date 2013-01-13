@@ -3,7 +3,9 @@ package minidb.core.model.action;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Create {
+import minidb.core.model.data.ISession;
+
+public class Create implements IAction {
 	private final String table;
 	private final List<String> columns;
 	
@@ -22,7 +24,15 @@ public class Create {
 	}
 	
 	public void addColumn(String column) {
-		columns.add(column);
+		if(!columns.contains(column)) {
+			columns.add(column);
+		}
+	}
+	
+	public void addColumns(String[] columns) {
+		for(String column : columns) {
+			addColumn(column);
+		}
 	}
 	
 	public String toString() {
@@ -31,6 +41,11 @@ public class Create {
 			result += " " + c;
 		}
 		return result;
+	}
+
+	@Override
+	public String ExecuteUsing(ISession session) {
+		return session.create(this);
 	}
 	
 }

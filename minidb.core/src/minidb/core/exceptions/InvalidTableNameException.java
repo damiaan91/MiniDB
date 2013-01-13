@@ -2,7 +2,7 @@ package minidb.core.exceptions;
 
 import java.text.MessageFormat;
 
-public class InvalidTableNameException extends Exception {
+public class InvalidTableNameException extends MiniDBCoreException {
 
 	/**
 	 * 
