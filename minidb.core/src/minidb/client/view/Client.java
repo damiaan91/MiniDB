@@ -21,7 +21,6 @@ import minidb.core.model.action.Select;
 import minidb.core.model.data.ISession;
 import minidb.core.model.data.SecureDatabase;
 
-
 public class Client {
 
 	private Scanner in = new Scanner(System.in);
@@ -57,19 +56,14 @@ public class Client {
 		String password;
 		session = null;
 		
-		for(int i = 0; i < 3 && session == null; i++) {
-			System.out.print("Login: ");
-			username = in.nextLine();
-			System.out.print("Password: ");
-			password = in.nextLine();
-			try {
-				session = db.login(username, password);
-			} catch (InvalidUserException e) {
-				System.out.println(e.getMessage());
-			}
-			if (session == null) {
-				System.out.println("Invalid password.");
-			}
+		System.out.print("Login: ");
+		username = in.nextLine();
+		System.out.print("Password: ");
+		password = in.nextLine();
+		try {
+			session = db.login(username, password);
+		} catch (InvalidUserException e) {
+			System.out.println(e.getMessage());
 		}
 		if(session == null) {
 			System.out.println("Failed to login.");
