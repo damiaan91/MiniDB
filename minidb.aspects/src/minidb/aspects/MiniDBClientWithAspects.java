@@ -1,4 +1,4 @@
-package main;
+package minidb.aspects;
 import minidb.client.view.Client;
 
 

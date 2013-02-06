@@ -2,8 +2,6 @@ package minidb.core.security;
 
 import java.util.HashMap;
 
-
-
 import minidb.core.config.Defaults;
 import minidb.core.exceptions.InsufficientRightsExcpetion;
 import minidb.core.exceptions.InvalidUserException;

@@ -1,0 +1,3 @@
+[07:44:34]Server started listening
+[07:44:41]Anonymous issued command: #SERVER_CONNECT  
+[07:45:05]Anonymous has left the server.

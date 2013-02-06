@@ -72,6 +72,11 @@ public abstract class Database {
 		return table.selectColumns(select.getSelect().toArray(new String[select.getSelect().size()]));
 	}
 	
+	@Override
+	public String toString() {
+		return name;
+	}
+
 	protected abstract class DbSession implements ISession {
 		
 		protected Database db;

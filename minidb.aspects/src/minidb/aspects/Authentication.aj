@@ -1,11 +1,10 @@
-package authentication;
+package minidb.aspects;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-import logging.CRUDLogging;
 import minidb.core.exceptions.InvalidTableNameException;
 import minidb.core.exceptions.InvalidUserException;
 import minidb.core.exceptions.MiniDBCoreException;
@@ -14,7 +13,7 @@ import minidb.core.model.data.ISession;
 import minidb.core.security.AccessManager;
 
 public aspect Authentication {
-	public static final String[] filterList = {CRUDLogging.LOGGING_COLUMNS[2]+"_"+CRUDLogging.LOGGING_TABLE};
+	public static final String[] filterList = {InDatabaseLogging.LOGGING_COLUMNS[2]+"_"+InDatabaseLogging.LOGGING_TABLE};
 	
 	private Scanner in = new Scanner(System.in);
 	private int counter = 0;
@@ -36,15 +35,20 @@ public aspect Authentication {
 		!within(Authentication);
 	
 	pointcut clientLogin(String username, String password) : 
+		cflow(call(* minidb.client.view.Client+.Login(..))) &&
 		monitorLogin(username, password) &&
-		cflow(execution(* *..Client+.Login(..)));
+		!within(Util);
 	
 	pointcut monitorLogin(String username, String password) :
-		call(* *..SecureDatabase.login(String, String)) &&
+		call(* minidb.core.model.data.SecureDatabase.login(String, String)) &&
 		args(username, password);
 	
 	after(String username, String password) : clientLogin(username, password) {
 		counter++;
+	}
+	
+	before(String u, String p) : monitorLogin(u, p) && !within(Util) {
+		System.out.println("test123");
 	}
 	
 	ISession around(String username, String password) : clientLogin(username, password) {
