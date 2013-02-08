@@ -35,20 +35,16 @@ public aspect Authentication {
 		!within(Authentication);
 	
 	pointcut clientLogin(String username, String password) : 
-		cflow(call(* minidb.client.view.Client+.Login(..))) &&
-		monitorLogin(username, password) &&
+		databaseLogin(username, password) && 
+		cflow(call(* minidb.client.view.Client.login())) && 
 		!within(Util);
 	
-	pointcut monitorLogin(String username, String password) :
+	pointcut databaseLogin(String username, String password) :
 		call(* minidb.core.model.data.SecureDatabase.login(String, String)) &&
 		args(username, password);
 	
 	after(String username, String password) : clientLogin(username, password) {
 		counter++;
-	}
-	
-	before(String u, String p) : monitorLogin(u, p) && !within(Util) {
-		System.out.println("test123");
 	}
 	
 	ISession around(String username, String password) : clientLogin(username, password) {

@@ -1,3 +1,59 @@
 [07:44:34]Server started listening
 [07:44:41]Anonymous issued command: #SERVER_CONNECT  
 [07:45:05]Anonymous has left the server.
+[11:48:54]Start monitoring
+[11:49:19]test123 issued command: #SERVER_CONNECT test123 
+[11:50:04]test123: stats
+[11:50:13]test123 issued command: #stats
+[11:50:28]test123 issued command: #admin\
+[11:50:36]test123 issued command: #admin
+[11:51:01]test123 has left the server.
+[12:56:57]Start monitoring
+[12:57:57]Start monitoring
+[01:00:13]Start monitoring
+[01:02:13]Start monitoring
+[01:03:30]Start monitoring
+[01:03:52]Start monitoring
+[01:05:12]Start monitoring
+[01:38:57]Start monitoring
+[01:39:12]null has left the server.
+[01:39:59]Start monitoring
+[01:40:03]null issued command: #SERVER_CONNECT  
+[01:40:24]null issued command: #stats
+[01:41:19]null issued command: #login
+[01:41:45]Anonymous: test
+[01:42:18]Start monitoring
+[03:20:39]Start monitoring
+[03:20:47]null has left the server.
+[03:35:07]Start monitoring
+[03:35:16]null has left the server.
+[03:35:59]Start monitoring
+[03:36:06]test issued command: #SERVER_CONNECT test 
+[03:36:10]test has left the server.
+[03:36:40]Start monitoring
+[03:36:52]test issued command: #SERVER_CONNECT test 
+[03:36:55]test has left the server.
+[03:38:16]Start monitoring
+[03:38:22]test issued command: #SERVER_CONNECT test 
+[03:38:50]Start monitoring
+[03:39:03]null issued command: #SERVER_CONNECT admin 
+[03:39:30]Start monitoring
+[03:40:05]Start monitoring
+[03:41:18]Start monitoring
+[03:41:29]null has left the server.
+[03:41:57]Start monitoring
+[03:46:08]Start monitoring
+[03:46:11]null has left the server.
+[03:46:44]Start monitoring
+[03:46:49]null has left the server.
+[03:48:08]Start monitoring
+[03:49:19]Start monitoring
+[03:49:29]dvdvdv issued command: #SERVER_CONNECT dvdvdv 
+[03:49:39]dvdvdv: jajaja
+[03:50:31]Start monitoring
+[03:50:35]rwrwrwr issued command: #SERVER_CONNECT rwrwrwr 
+[03:54:57]Start monitoring
+[03:55:02]ddvdvdv issued command: #SERVER_CONNECT ddvdvdv 
+[03:55:08]ddvdvdv issued command: #stats
+[03:55:37]ddvdvdv issued command: #op
+[03:55:42]ddvdvdv has left the server.

@@ -68,6 +68,8 @@ public class Client {
 		if(session == null) {
 			System.out.println("Failed to login.");
 			exitProgram = true;
+		} else {
+			System.out.println("Login successfull. Type HELP to get a list of commands.");
 		}
 		
 	}

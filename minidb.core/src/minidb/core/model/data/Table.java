@@ -54,7 +54,7 @@ public class Table {
 		if (columns[0].equals("*")) {
 			result = columnNames.get(0);
 			for (int i = 1; i < columnNames.size(); i++) {
-				result += String.format(Defaults.SPACING, columnNames.get(i));
+				result += columnNames.get(i);
 			}
 			result += "\n----------------------------------------------------------";
 			for (Record record : getRecords().values()) {
