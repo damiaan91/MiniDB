@@ -8,9 +8,16 @@ import minidb.core.exceptions.InvalidUserException;
 import minidb.core.exceptions.UserAlreadyExistsException;
 import minidb.core.model.data.Database;
 
+/**
+ * @author  Damiaan
+ */
 public class AccessManager {
 	
 	private HashMap<String, Rule> rules = new HashMap<String, Rule>();
+	/**
+	 * @uml.property  name="userManager"
+	 * @uml.associationEnd  
+	 */
 	private UserManager userManager;
 	private String databaseName;
 	

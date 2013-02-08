@@ -5,8 +5,17 @@ import java.util.List;
 
 import minidb.core.model.data.ISession;
 
+/**
+ * @author  Damiaan
+ */
 public class CreateTable implements IAction {
+	/**
+	 * @uml.property  name="table"
+	 */
 	private final String table;
+	/**
+	 * @uml.property  name="columns"
+	 */
 	private final List<String> columns;
 	
 	
@@ -15,10 +24,18 @@ public class CreateTable implements IAction {
 		this.columns = new ArrayList<String>();
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="table"
+	 */
 	public String getTable() {
 		return table;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="columns"
+	 */
 	public List<String> getColumns() {
 		return columns;
 	}

@@ -11,8 +11,14 @@ import minidb.core.exceptions.InvalidColumnException;
 
 
 
+/**
+ * @author  Damiaan
+ */
 public class Record {
 	
+	/**
+	 * @uml.property  name="key"
+	 */
 	private BigInteger key;
 	private final HashMap<String, String> data;
 	
@@ -20,10 +26,18 @@ public class Record {
 		this(null);
 	}
 	
+	/**
+	 * @return
+	 * @uml.property  name="key"
+	 */
 	public BigInteger getKey() {
 		return key;
 	}
 
+	/**
+	 * @param key
+	 * @uml.property  name="key"
+	 */
 	public void setKey(BigInteger key) {
 		this.key = key;
 	}

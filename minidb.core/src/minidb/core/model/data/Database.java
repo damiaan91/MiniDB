@@ -13,23 +13,44 @@ import minidb.core.model.action.Insert;
 import minidb.core.model.action.Select;
 
 
+/**
+ * @author  Damiaan
+ */
 public abstract class Database {
 	
+	/**
+	 * @uml.property  name="name"
+	 */
 	private String name;
+	/**
+	 * @uml.property  name="tables"
+	 */
 	private final HashMap<String, Table> tables = new HashMap<String, Table>();
 	
 	protected Database(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="name"
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @param name
+	 * @uml.property  name="name"
+	 */
 	protected void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="tables"
+	 */
 	protected Collection<Table> getTables() {
 		return tables.values();
 	}
@@ -77,8 +98,15 @@ public abstract class Database {
 		return name;
 	}
 
+	/**
+	 * @author  Damiaan
+	 */
 	protected abstract class DbSession implements ISession {
 		
+		/**
+		 * @uml.property  name="db"
+		 * @uml.associationEnd  
+		 */
 		protected Database db;
 		
 		protected DbSession(Database db) {

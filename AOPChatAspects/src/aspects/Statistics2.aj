@@ -22,6 +22,7 @@ public aspect Statistics2 extends AbstractStatistics {
 		  };
 	
 	public Statistics2() {
+		super();
 	}
 
 	protected pointcut startUp() : 
@@ -72,86 +73,86 @@ public aspect Statistics2 extends AbstractStatistics {
 	}
 	
 	//THIS STUFF IS DOUBLE, IS ALSO DEFINED IN PRIVILEGES.
-		pointcut command(String c, ConnectionToClient i):
-			call(void handleCommand(String, ConnectionToClient)) && args(c, i);
-		/**
-		 * defines 1 new command related to statistics
-		 * @param c
-		 * @param i
-		 */
-		void around(String c, ConnectionToClient i): command(c,i){
-			String command[] = c.split(" ");
-			if(command.length >= 2){
-				switch(command[0]){
-					case "#stats": showStats(command, i);
-					break;
-					default: proceed(c,i);
-				}
-			}else proceed(c,i);
-		}
-		
-		private void showStats(String[] c, ConnectionToClient i){
-			if(c.length == 2){
-				if(containsKey(c[1]+USER_ONLINE_TIME)){
-					String[] result = formattedStats(c[1],(getStatAsLong(c[1]+USER_INFO)>0));
-					for(String msg: result){
-						try{
-							i.sendToClient("[SERVER]: "+ msg);
-						}catch(IOException e){System.out.println("error sending message to user");}
-					}
-					}else{
+	pointcut command(String c, ConnectionToClient i):
+		call(void handleCommand(String, ConnectionToClient)) && args(c, i);
+	/**
+	 * defines 1 new command related to statistics
+	 * @param c
+	 * @param i
+	 */
+	void around(String c, ConnectionToClient i): command(c,i){
+		String command[] = c.split(" ");
+		if(command.length >= 2){
+			switch(command[0]){
+				case "#stats": showStats(command, i);
+				break;
+				default: proceed(c,i);
+			}
+		}else proceed(c,i);
+	}
+	
+	private void showStats(String[] c, ConnectionToClient i){
+		if(c.length == 2){
+			if(containsKey(c[1]+USER_ONLINE_TIME)){
+				String[] result = formattedStats(c[1],(getStatAsLong(c[1]+USER_INFO)>0));
+				for(String msg: result){
 					try{
-						i.sendToClient("User not found.");
+						i.sendToClient("[SERVER]: "+ msg);
 					}catch(IOException e){System.out.println("error sending message to user");}
 				}
-			}else{
+				}else{
 				try{
-					i.sendToClient("Invalid syntax. Please use #stats <user>");
+					i.sendToClient("User not found.");
 				}catch(IOException e){System.out.println("error sending message to user");}
 			}
+		}else{
+			try{
+				i.sendToClient("Invalid syntax. Please use #stats <user>");
+			}catch(IOException e){System.out.println("error sending message to user");}
 		}
-		/**
-		 * return the usage statistics of a user in a formatted fashion for display. Fuckin' format.
-		 */
-		private String[] formattedStats(String name, boolean online){
-			String result[] = new String[5];
-			SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
-			sdf.setTimeZone(TimeZone.getDefault());
-			result[0] = baseLine[0]+name;
-			result[1] = baseLine[1];
-			if(online){
-				result[2] = baseLine[2] + sdf.format(new Date(getStatAsLong(name+USER_TIME)));
-				long currentTimeOnline = currentTimeOnline(name);
-				result[3] = baseLine[3] + (currentTimeOnline/3600000)+":"+((currentTimeOnline%3600000)/60000)+":"+((currentTimeOnline%60000)/1000);
-			}
-			else{
+	}
+	/**
+	 * return the usage statistics of a user in a formatted fashion for display. Fuckin' format.
+	 */
+	private String[] formattedStats(String name, boolean online){
+		String result[] = new String[5];
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+		sdf.setTimeZone(TimeZone.getDefault());
+		result[0] = baseLine[0]+name;
+		result[1] = baseLine[1];
+		if(online){
+			result[2] = baseLine[2] + sdf.format(new Date(getStatAsLong(name+USER_TIME)));
+			long currentTimeOnline = currentTimeOnline(name);
+			result[3] = baseLine[3] + (currentTimeOnline/3600000)+":"+((currentTimeOnline%3600000)/60000)+":"+((currentTimeOnline%60000)/1000);
+		}
+		else{
 
-				result[2] = baseLine[4] + sdf.format(new Date(getStatAsLong(name+USER_TIME)));
-				long currentTimeOnline = getStatAsLong(name+USER_ONLINE_TIME);
-				result[3] = baseLine[3] + (currentTimeOnline/3600000)+":"+((currentTimeOnline%3600000)/60000)+":"+((currentTimeOnline%60000)/1000);
-			}
-			//result[4] = baseLine[5] + sdf.format(userStatistics.get(name)[2]);
-			
-			return result;
+			result[2] = baseLine[4] + sdf.format(new Date(getStatAsLong(name+USER_TIME)));
+			long currentTimeOnline = getStatAsLong(name+USER_ONLINE_TIME);
+			result[3] = baseLine[3] + (currentTimeOnline/3600000)+":"+((currentTimeOnline%3600000)/60000)+":"+((currentTimeOnline%60000)/1000);
 		}
+		//result[4] = baseLine[5] + sdf.format(userStatistics.get(name)[2]);
 		
-		/**
-		 * Registration of a new user
-		 * @param c
-		 * @param s
-		 */
-		pointcut successfulReg(ConnectionToClient c, String s): 
-			call (void sendToClient(ConnectionToClient, String)) && 
-			args(c, s);
-		
-		after (ConnectionToClient c, String s) returning: successfulReg(c, s){
-			 if (s.equals("[SERVER]: Username registered and set.")){
-				 long currentTime = new Date().getTime();
-				 long[] result = {currentTime, 0, currentTime, 1};
-				 String name = (String)c.getInfo("name");
-				 //TODO:
-			 }
-		}
+		return result;
+	}
+	
+	/**
+	 * Registration of a new user
+	 * @param c
+	 * @param s
+	 */
+	pointcut successfulReg(ConnectionToClient c, String s): 
+		call (void sendToClient(ConnectionToClient, String)) && 
+		args(c, s);
+	
+	after (ConnectionToClient c, String s) returning: successfulReg(c, s){
+		 if (s.equals("[SERVER]: Username registered and set.")){
+			 long currentTime = new Date().getTime();
+			 long[] result = {currentTime, 0, currentTime, 1};
+			 String name = (String)c.getInfo("name");
+			 //TODO:
+		 }
+	}
 	
 	private long currentTimeOnline(String s){
 		long old = getStatAsLong(s+USER_TIME);

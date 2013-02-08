@@ -57,3 +57,13 @@
 [03:55:08]ddvdvdv issued command: #stats
 [03:55:37]ddvdvdv issued command: #op
 [03:55:42]ddvdvdv has left the server.
+[09:57:27]Start monitoring
+[09:57:35]dvadvadva issued command: #SERVER_CONNECT dvadvadva 
+[09:57:41]dvadvadva issued command: #stats
+[09:57:58]dvadvadva issued command: #stats admin
+[09:58:17]dvadvadva issued command: #stats dvadvadva
+[09:58:25]dvadvadva has left the server.
+[10:17:02]Start monitoring
+[10:17:47]Start monitoring
+[10:44:25]Start monitoring
+[10:44:47]efefef issued command: #SERVER_CONNECT efefef 

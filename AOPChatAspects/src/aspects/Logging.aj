@@ -10,7 +10,6 @@ public aspect Logging extends FileLogger {
 	public boolean chat_logging 		= true;
 	public boolean entermessage_logging	= true;
 	public boolean command_logging		= true;
-	public boolean password_redaction	= true;
 	
 	/**
 	 * Initialize the logging

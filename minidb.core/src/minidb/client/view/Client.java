@@ -21,10 +21,21 @@ import minidb.core.model.action.Select;
 import minidb.core.model.data.ISession;
 import minidb.core.model.data.SecureDatabase;
 
+/**
+ * @author  Damiaan
+ */
 public class Client {
 
 	private Scanner in = new Scanner(System.in);
+	/**
+	 * @uml.property  name="db"
+	 * @uml.associationEnd  
+	 */
 	private SecureDatabase db;
+	/**
+	 * @uml.property  name="session"
+	 * @uml.associationEnd  
+	 */
 	private ISession session;
 	private boolean exitProgram;
 	

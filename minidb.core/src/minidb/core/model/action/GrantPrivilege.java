@@ -2,25 +2,56 @@ package minidb.core.model.action;
 
 import minidb.core.model.data.ISession;
 
+/**
+ * @author  Damiaan
+ */
 public class GrantPrivilege implements IAction {
 	
+	/**
+	 * @uml.property  name="readAccess"
+	 */
 	private final boolean readAccess;
+	/**
+	 * @uml.property  name="writeAccess"
+	 */
 	private final boolean writeAccess;
+	/**
+	 * @uml.property  name="table"
+	 */
 	private final String table;
+	/**
+	 * @uml.property  name="user"
+	 */
 	private final String user;
 	
+	/**
+	 * @return
+	 * @uml.property  name="readAccess"
+	 */
 	public boolean isReadAccess() {
 		return readAccess;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="writeAccess"
+	 */
 	public boolean isWriteAccess() {
 		return writeAccess;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="table"
+	 */
 	public String getTable() {
 		return table;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="user"
+	 */
 	public String getUser() {
 		return user;
 	}

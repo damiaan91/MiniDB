@@ -15,8 +15,15 @@ import minidb.core.model.action.Select;
 import minidb.core.security.AccessManager;
 
 
+/**
+ * @author  Damiaan
+ */
 public class SecureDatabase extends Database {
 
+	/**
+	 * @uml.property  name="accessManager"
+	 * @uml.associationEnd  
+	 */
 	private AccessManager accessManager;
 	
 	public SecureDatabase(String name) {
@@ -35,9 +42,22 @@ public class SecureDatabase extends Database {
 		return null;
 	}
 	
+	/**
+	 * @author  Damiaan
+	 */
 	public class SecureDBSession extends DbSession {
+		/**
+		 * @uml.property  name="sessionUser"
+		 */
 		private String sessionUser;
+		/**
+		 * @uml.property  name="isActive"
+		 */
 		private boolean isActive;
+		/**
+		 * @uml.property  name="accessManager"
+		 * @uml.associationEnd  
+		 */
 		private AccessManager accessManager;
 		
 		private SecureDBSession(SecureDatabase db, String username) {
@@ -50,26 +70,19 @@ public class SecureDatabase extends Database {
 		@Override
 		public String select(Select select) {
 			try {
-				if(accessManager.hasReadAccess(sessionUser, select.getTable())) {
-					return db.executeSelect(select);
-				}
-			} catch (InvalidUserException | InvalidTableNameException e) {
+				return db.executeSelect(select);
+			} catch (InvalidTableNameException e) {
 				return e.getMessage();
 			}
-			return "You have no rights to read this table.";
 		}
 
 		@Override
 		public String insert(Insert insert) {
 			try {
-				if(accessManager.hasWriteAccess(sessionUser, insert.getTable())) {
-					return db.executeInsert(insert);
-				}
-			} catch (InvalidUserException | InvalidTableNameException
-					| InvalidAmountOfInsertValues e) {
+				return db.executeInsert(insert);
+			} catch (InvalidTableNameException | InvalidAmountOfInsertValues e) {
 				return e.getMessage();
 			}
-			return "You have no rights to write in this table.";
 		}
 
 		@Override
@@ -81,16 +94,16 @@ public class SecureDatabase extends Database {
 		@Override
 		public String create(CreateTable create) {
 			try {
-				if(accessManager.isAdmin(sessionUser)) {
-					return db.executeCreate(create);
-				}
-			} catch (InvalidUserException | InvalidTableNameException
-					| ColumnAlreadyExistsException e) {
+				return db.executeCreate(create);
+			} catch (InvalidTableNameException| ColumnAlreadyExistsException e) {
 				return e.getMessage();
 			}
-			return "You have no rights to create tables.";
 		}
 
+		/**
+		 * @return
+		 * @uml.property  name="isActive"
+		 */
 		@Override
 		public boolean isActive() {
 			return isActive;
@@ -101,6 +114,10 @@ public class SecureDatabase extends Database {
 			isActive = false;
 		}
 
+		/**
+		 * @return
+		 * @uml.property  name="sessionUser"
+		 */
 		@Override
 		public String getSessionUser() {
 			return sessionUser;
@@ -109,13 +126,11 @@ public class SecureDatabase extends Database {
 		@Override
 		public String createUser(CreateUser createUser) {
 			try {
-				if(accessManager.isAdmin(sessionUser)) {
-					accessManager.addUser(createUser.getUsername(), createUser.getPassword(), createUser.isAdmin());
-				}
-			} catch (InvalidUserException | UserAlreadyExistsException e) {
+				accessManager.addUser(createUser.getUsername(), createUser.getPassword(), createUser.isAdmin());
+				return "User is succesfully added.";
+			} catch (UserAlreadyExistsException e) {
 				return e.getMessage();
 			}
-			return "You have no rights to create users.";
 		}
 
 		@Override

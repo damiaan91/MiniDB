@@ -10,7 +10,8 @@ public aspect Privileges {
 	
 	private HashMap<String, String> privilegedUsers = new HashMap<String, String>();
 	
-	before() : Logging.startUp() {
+	public Privileges() {
+		System.out.println("lalalala");
 		readPrivileges();
 	}
 	
