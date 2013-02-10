@@ -11,7 +11,7 @@
 
 ## Installation
 
-The easiest way the run the programs is to import the packages in a ecplise workspace an follow the relevant instructions bellow.
+The easiest way the run the programs is to import the packages in an ecplise workspace and follow the relevant instructions bellow.
 
 Start AOPChat base program:
 * Run the EchoServer in AOPChat to start a chat server.
