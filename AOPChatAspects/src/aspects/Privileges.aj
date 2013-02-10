@@ -6,24 +6,29 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Privileges aspect for AOPChat.
+ */
 public aspect Privileges {
 	
+	/**
+	 * List of privileged users.
+	 */
 	private HashMap<String, String> privilegedUsers = new HashMap<String, String>();
 	
+	/**
+	 * Privileges constructor.
+	 */
 	public Privileges() {
-		System.out.println("lalalala");
 		readPrivileges();
 	}
-	
-	pointcut command(String c, ConnectionToClient i):
-		call(void handleCommand(String, ConnectionToClient)) && args(c, i);
 	
 	/**
 	 * defines 4 new commands related to modifying permissions
 	 * @param c
 	 * @param i
 	 */
-	void around(String c, ConnectionToClient i): command(c,i){
+	void around(String c, ConnectionToClient i): Logging.command(c,i){
 		String command[] = c.split(" ");
 		if(command.length >= 2){
 			switch(command[0]){
@@ -96,7 +101,10 @@ public aspect Privileges {
 		issuer.getServer().sendToAllClients(command[1]+ " was demoted to op");
 		flushPermissions();
 	}
-
+	
+	/**
+	 * Flush and save permissions to file.
+	 */
 	private void flushPermissions(){
 		try{
 			BufferedWriter out = new BufferedWriter(new FileWriter("privileges.txt"));
@@ -111,6 +119,9 @@ public aspect Privileges {
 		
 	}
 	
+	/**
+	 * Read privileges form file.
+	 */
 	private void readPrivileges(){
 		try {
 			BufferedReader in = new BufferedReader(new FileReader("privileges.txt"));
@@ -131,10 +142,7 @@ public aspect Privileges {
 	//--------------protected command list. --------------------//
 	
 	/**
-	 * TEH UGLIES!
-	 * @param l
-	 * @param i
-	 * @return
+	 * The if the user is an admin.
 	 */
 	private boolean checkPerms(int l, ConnectionToClient i){
 		boolean result = false;
@@ -149,19 +157,26 @@ public aspect Privileges {
 		return result;
 	}
 	
-		
+	/**
+	 * Pointcut of OP commands.
+	 */
 	pointcut opCommands(String[] c, ConnectionToClient i): 
 		(call(void kick(..)) && args(c,i)) || 
 		(call (void ban(..)) && args(c,i)) ||
 		(call (void deOpUser(..)) && args(c,i)) ||
 		(call (void opUser(..)) && args(c,i)); 
 
-	
+	/**
+	 * Pointcut of admin commands.
+	 */
 	pointcut adminCommands(String[] c, ConnectionToClient i):
 		(call(void adminUser(..)) && args(c,i)) ||
 		(call(void deAdminuser(..)) && args(c,i)) || 
 		call(void shutdown(..)) && args(c,i);
 	
+	/**
+	 * Advice for handling OP commands.
+	 */
 	void around(String[] c, ConnectionToClient i): opCommands(c,i){
 		System.out.println("op command given");
 		if(checkPerms(2,i)){proceed(c, i);}
@@ -169,6 +184,9 @@ public aspect Privileges {
 			catch(Exception e){System.out.println("error! could not send denial to issuer!");}}
 	}
 	
+	/**
+	 * Advice for handling admin commands.
+	 */
 	void around(String[] c, ConnectionToClient i): adminCommands(c,i){
 		System.out.println("Admin Command Given");
 		if(checkPerms(3,i)){proceed(c, i);}

@@ -8,12 +8,15 @@ import java.util.TimeZone;
 import aopchat.ConnectionToClient;
 import aspects.core.AbstractStatistics;
 
-public aspect Statistics2 extends AbstractStatistics {
+/**
+ * Aspect for monitoring stats of the AOPChat.
+ */
+public aspect Statistics extends AbstractStatistics {
+	//CONSTANTS
 	public static final String USER_TIME = "_time";
 	public static final String USER_ONLINE_TIME = "_time_online";
 	public static final String USER_INFO = "_info";
-	
-	private final String[] baseLine = {	"Usage statistics for: ", 
+	private static final String[] baseLine = {	"Usage statistics for: ", 
 			"------------------------------------------",
 			"Identified since: ",
 			"Total time online: ",
@@ -21,22 +24,29 @@ public aspect Statistics2 extends AbstractStatistics {
 			"Registered since: "
 		  };
 	
-	public Statistics2() {
+	/**
+	 * Satistics constructor.
+	 */
+	public Statistics() {
 		super();
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see aspects.core.AbstractStatistics#startUp()
+	 */
 	protected pointcut startUp() : 
 		Logging.startUp();
 	
-	//Log user entering
+	/**
+	 * Log user entering
+	 */
 	pointcut userInfoSet(String i, Object s) : 
 		(call (void setInfo(String, Object))) && args(i, s);
 		
 		
 	/**
 	 * update identified since
-	 * @param i
-	 * @param s
 	 */
 	after(String i, Object s) returning: userInfoSet(i,s){
 		if(i.equals("name")){
@@ -48,8 +58,6 @@ public aspect Statistics2 extends AbstractStatistics {
 	
 	/**
 	 * update last seen, total time online
-	 * @param i
-	 * @param s
 	 */
 	before(String i, Object s): userInfoSet(i,s){
 		if(i.equals("name")){
@@ -59,9 +67,15 @@ public aspect Statistics2 extends AbstractStatistics {
 		}
 	}
 	
+	/**
+	 * Pointcut when a client disconnects.
+	 */
 	pointcut userLeft(ConnectionToClient c):
 		(call(void clientDisconnected(ConnectionToClient)) || call(void clientException(ConnectionToClient,..))) && args(c,..);
-
+	
+	/**
+	 * Advice for monitoring user statistics.
+	 */
 	after(ConnectionToClient c) returning: 
 		userLeft(c){
 		String name = (String)c.getInfo("name");
@@ -72,13 +86,14 @@ public aspect Statistics2 extends AbstractStatistics {
 		}
 	}
 	
-	//THIS STUFF IS DOUBLE, IS ALSO DEFINED IN PRIVILEGES.
-	pointcut command(String c, ConnectionToClient i):
-		call(void handleCommand(String, ConnectionToClient)) && args(c, i);
+	/*
+	 * (non-Javadoc)
+	 * @see aspects.Logging#command(String, ConnectionToClient)
+	 */
+	pointcut command(String c, ConnectionToClient i): Logging.command(c, i);
+	
 	/**
 	 * defines 1 new command related to statistics
-	 * @param c
-	 * @param i
 	 */
 	void around(String c, ConnectionToClient i): command(c,i){
 		String command[] = c.split(" ");
@@ -91,6 +106,9 @@ public aspect Statistics2 extends AbstractStatistics {
 		}else proceed(c,i);
 	}
 	
+	/**
+	 * Print user stats.
+	 */
 	private void showStats(String[] c, ConnectionToClient i){
 		if(c.length == 2){
 			if(containsKey(c[1]+USER_ONLINE_TIME)){
@@ -111,6 +129,7 @@ public aspect Statistics2 extends AbstractStatistics {
 			}catch(IOException e){System.out.println("error sending message to user");}
 		}
 	}
+	
 	/**
 	 * return the usage statistics of a user in a formatted fashion for display. Fuckin' format.
 	 */
@@ -138,8 +157,6 @@ public aspect Statistics2 extends AbstractStatistics {
 	
 	/**
 	 * Registration of a new user
-	 * @param c
-	 * @param s
 	 */
 	pointcut successfulReg(ConnectionToClient c, String s): 
 		call (void sendToClient(ConnectionToClient, String)) && 
@@ -150,10 +167,12 @@ public aspect Statistics2 extends AbstractStatistics {
 			 long currentTime = new Date().getTime();
 			 long[] result = {currentTime, 0, currentTime, 1};
 			 String name = (String)c.getInfo("name");
-			 //TODO:
 		 }
 	}
 	
+	/**
+	 * Calculates current online time of an user.
+	 */
 	private long currentTimeOnline(String s){
 		long old = getStatAsLong(s+USER_TIME);
 		Long total = getStatAsLong(s+USER_ONLINE_TIME);

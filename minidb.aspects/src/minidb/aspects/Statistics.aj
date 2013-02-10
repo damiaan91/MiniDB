@@ -7,6 +7,10 @@ import minidb.core.model.action.IAction;
 import minidb.core.model.data.ISession;
 import minidb.core.config.Defaults;
 
+/**
+ * Aspect for monitoring and adapting statistics.
+ * @author Damiaan
+ */
 public aspect Statistics extends AbstractStatistics {
 	//CONSTANTS
 	public static final String USER_LAST_LOGIN = "_last_login";
