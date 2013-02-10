@@ -25,4 +25,4 @@ Start MiniDB base program:
 * Run the Client in minidb.core to start a minidb instance (login: admin/admin).
 
 Start MiniDB with aspects:
-* Run the MiniDBWithAspects in minidb.aspects to start a minidb instance with aspects (login: admin/admin).
+* Run the MiniDBClientWithAspects in minidb.aspects to start a minidb instance with aspects (login: admin/admin).
