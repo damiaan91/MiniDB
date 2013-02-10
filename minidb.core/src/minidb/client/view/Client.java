@@ -80,7 +80,7 @@ public class Client {
 			System.out.println("Failed to login.");
 			exitProgram = true;
 		} else {
-			System.out.println("Login successfull. Type HELP to get a list of commands.");
+			System.out.println("Login successfull. Type HELP to get a list of available commands.");
 		}
 		
 	}
@@ -111,6 +111,8 @@ public class Client {
 				case "HELP": printHelp();
 				sysCmd = true;
 				break;
+				case "GET TABLES": printAllTables();
+				break;
 			}
 			if (session.isActive() && !sysCmd) {
 				String[] statementParts = actionMsg.split(" ");
@@ -132,13 +134,21 @@ public class Client {
 		}
 	}
 	
+	private void printAllTables() {
+		System.out.println("Tables in " + db.getName());
+		for(String table : db.getTableNames()) {
+			System.out.println("- " + table);
+		}
+	}
+
 	private void printHelp() {
-		System.out.println("List with supported commands:");
+		System.out.println("Supported commands:");
 		System.out.println("- SELECT * FROM _TABLENAME_");
 		System.out.println("- INSERT INTO _TABLENAME_ VALUES _VALUE1_[, _VALUEN_]");
 		System.out.println("- CREATE _TABLENAME_ COLUMNS _COLUMN1_[, _COLUMNN_]");
 		System.out.println("- EXIT");
 		System.out.println("- LOGOUT");
+		System.out.println("- GET TABLES");
 	}
 
 	private Select createSelect(String[] statement) throws InvalidStatementException {

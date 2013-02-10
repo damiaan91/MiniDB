@@ -10,8 +10,19 @@ import java.util.GregorianCalendar;
  * @param <T> Input argument of the method to log.
  */
 public abstract aspect AbstractLogger<T> {
+	/**
+	 * Time stamp format.
+	 */
 	protected String DATETIME_FORMAT = "hh:mm:ss";
+	
+	/**
+	 * Log prefix for the console message.
+	 */
 	protected String LOG_PREFIX = "ASPECT";
+	
+	/**
+	 * Property to enable the console logging (default is enabled).
+	 */
 	protected boolean CONSOLE_LOGGING_ENABLED = true;
 	
 	/**
@@ -42,9 +53,9 @@ public abstract aspect AbstractLogger<T> {
 	}
 	
 	/**
-	 * 
-	 * @param s
-	 * @return
+	 * Get a time stamp which corresponds with the format given by the DATETIME_FORMAT field.
+	 * @param s Suffix which will be appended after the time stamp.
+	 * @return A time stamp plus the given suffix.
 	 */
 	protected String getTimeStamp(String s){
 		String timestamp = "[" + new SimpleDateFormat(DATETIME_FORMAT).format(GregorianCalendar.getInstance().getTime())+"]";

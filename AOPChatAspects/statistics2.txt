@@ -1,0 +1,27 @@
+#statistics2.txt
+#Fri Feb 08 10:44:47 CET 2013
+test_info=1
+dvdvdv_time=1360291769625
+123=0
+dvadvadva_time_online=0
+efefef_info=1
+ewwgfwg_time=1360291289815
+dvadvadva_time=1360313905196
+Anonymous_info=1
+Anonymous_time_online=5591
+ddvdvdv_info=0
+rwrwrwr_info=1
+dvdvdv_time_online=1
+sdfsfsf_time=1360291571251
+test_time=1360291102452
+efefef_time=1360316687899
+dvdvdv_info=1
+Anonymous_time=1360316680278
+dvadvadva_info=0
+ddvdvdv_time_online=3
+effef_time=1360291609092
+ddvdvdv_time=1360292142353
+test=0
+efefef_time_online=0
+rwrwrwr_time=1360291835333
+rwrwrwr_time_online=1

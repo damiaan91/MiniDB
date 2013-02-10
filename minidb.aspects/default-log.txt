@@ -1,0 +1,40 @@
+[12:15:58]Server started listening
+[12:15:58]CREATE sys.log COLUMNS TIMESTAMP MESSAGE EXECUTED BY Executed by sys.log
+[12:15:58]CREATE test COLUMNS firstName lastName Executed by admin
+[12:15:58]INSERT INTO test VALUES Christoph Bockisch Executed by admin
+[12:15:58]INSERT INTO test VALUES Roeland Kegel Executed by admin
+[12:15:58]INSERT INTO test VALUES Damiaan Kruk Executed by admin
+[02:51:52]Server started listening
+[02:51:52]CREATE sys.stats COLUMNS Stat Value Executed by sys.stats
+[02:52:33]Server started listening
+[02:52:33]CREATE sys.stats COLUMNS Stat Value Executed by sys.stats
+[02:53:17]Server started listening
+[02:53:17]CREATE sys.log COLUMNS TIMESTAMP MESSAGE EXECUTED BY Executed by sys.log
+[02:53:18]CREATE test COLUMNS firstName lastName Executed by admin
+[02:53:18]INSERT INTO test VALUES Christoph Bockisch Executed by admin
+[02:53:18]INSERT INTO test VALUES Roeland Kegel Executed by admin
+[02:53:18]INSERT INTO test VALUES Damiaan Kruk Executed by admin
+[03:01:14]Server started listening
+[03:01:14]CREATE sys.log COLUMNS TIMESTAMP MESSAGE EXECUTED BY Executed by sys.log
+[03:01:14]CREATE test COLUMNS firstName lastName Executed by admin
+[03:01:14]INSERT INTO test VALUES Christoph Bockisch Executed by admin
+[03:01:14]INSERT INTO test VALUES Roeland Kegel Executed by admin
+[03:01:14]INSERT INTO test VALUES Damiaan Kruk Executed by admin
+[03:04:07]Server started listening
+[03:04:07]CREATE sys.log COLUMNS TIMESTAMP MESSAGE EXECUTED BY Executed by sys.log
+[03:04:07]CREATE test COLUMNS firstName lastName Executed by admin
+[03:04:07]INSERT INTO test VALUES Christoph Bockisch Executed by admin
+[03:04:07]INSERT INTO test VALUES Roeland Kegel Executed by admin
+[03:04:07]INSERT INTO test VALUES Damiaan Kruk Executed by admin
+[03:05:03]Server started listening
+[03:05:03]CREATE sys.log COLUMNS TIMESTAMP MESSAGE EXECUTED BY Executed by sys.log
+[03:05:03]CREATE test COLUMNS firstName lastName Executed by admin
+[03:05:03]INSERT INTO test VALUES Christoph Bockisch Executed by admin
+[03:05:03]INSERT INTO test VALUES Roeland Kegel Executed by admin
+[03:05:03]INSERT INTO test VALUES Damiaan Kruk Executed by admin
+[03:06:02]Server started listening
+[03:06:02]CREATE sys.log COLUMNS TIMESTAMP MESSAGE EXECUTED BY Executed by sys.log
+[03:06:02]CREATE test COLUMNS firstName lastName Executed by admin
+[03:06:02]INSERT INTO test VALUES Christoph Bockisch Executed by admin
+[03:06:02]INSERT INTO test VALUES Roeland Kegel Executed by admin
+[03:06:02]INSERT INTO test VALUES Damiaan Kruk Executed by admin

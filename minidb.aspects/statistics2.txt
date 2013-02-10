@@ -1,0 +1,6 @@
+#statistics2.txt
+#Sun Feb 10 19:13:08 CET 2013
+default_performed_actions=88
+default_admin_last_actions=1360519515740;1360519515742;1360519981985;1360519981988;1360519981993;1360519981995;
+default_successfull_logins=62
+default_failed_logins=0

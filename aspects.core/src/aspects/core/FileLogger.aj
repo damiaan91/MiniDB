@@ -4,14 +4,30 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * A logger implementation to log to a file.
+ * @author Damiaan
+ *
+ */
 public abstract aspect FileLogger extends AbstractLogger<String> {
+	/**
+	 * property to enable the file logging (default: enabled).
+	 */
 	protected boolean FILE_LOGGING_ENABLED = true;
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see aspects.core.AbstractLogger#handleLogMessage(java.lang.Object)
+	 */
 	@Override
 	protected void handleLogMessage(String line) {
 		writeLine(line);		
 	}
 	
+	/**
+	 * Write a line to file.
+	 * @param s Log line to write.
+	 */
 	protected final void writeLine(String s) {
 		writeLine(s, null);
 	}
